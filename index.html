@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #hangman {
+            font-size: 24px;
+            white-space: pre;
+            font-family: monospace;
+        }
+        #word-display {
+            font-size: 24px;
+            letter-spacing: 5px;
+            margin: 20px 0;
+        }
+        #message {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hangman Game</h1>
+    <p>Guess the word before the hangman is complete. If you guess a correct letter, it will be filled on the dashed line. If you guess an incorrect letter, a body part will be drawn on the hangman. The game ends when the word is guessed or the hangman is complete.</p>
+    
+    <pre id="hangman">
+        +---+
+        |   |
+            |
+            |
+            |
+            |
+        =========
+    </pre>
+    
+    <p id="word-display"></p>
+    <input type="text" id="guess" placeholder="Enter a letter or word">
+    <button onclick="makeGuess()">Guess</button>
+    <p id="message"></p>
+
+    <script>
+        const correctWord = "DIRECTOR LIABILITY";
+        let hiddenWord = correctWord.replace(/[A-Z]/g, "_");
+        let wrongGuesses = 0;
+        const maxGuesses = 8;
+        const hangmanStages = [
+            "\n        +---+\n        |   |\n        O   |\n            |\n            |\n            |\n        =========",
+            "\n        +---+\n        |   |\n        O   |\n        |   |\n            |\n            |\n        =========",
+            "\n        +---+\n        |   |\n        O   |\n       /|   |\n            |\n            |\n        =========",
+            "\n        +---+\n        |   |\n        O   |\n       /|\  |\n            |\n            |\n        =========",
+            "\n        +---+\n        |   |\n        O   |\n       /|\  |\n       /    |\n            |\n        =========",
+            "\n        +---+\n        |   |\n        O   |\n       /|\  |\n       / \  |\n            |\n        =========",
+            "\n        +---+\n        |   |\n        O   |\n       /|\  |\n       / \  |\n       x x  |\n        =========",
+            "\n        +---+\n        |   |\n        O   |\n       /|\  |\n       / \  |\n       x x  |\n      GAME OVER\n        ========="
+        ];
+
+        document.getElementById("word-display").innerText = hiddenWord;
+        
+        function makeGuess() {
+            const userGuess = document.getElementById("guess").value.toUpperCase().trim();
+            document.getElementById("guess").value = "";
+            if (!userGuess) return;
+            
+            if (userGuess.length > 1) {
+                if (userGuess === correctWord) {
+                    hiddenWord = correctWord;
+                } else {
+                    wrongGuesses++;
+                }
+            } else {
+                let newHiddenWord = "";
+                let found = false;
+                for (let i = 0; i < correctWord.length; i++) {
+                    if (correctWord[i] === userGuess) {
+                        newHiddenWord += userGuess;
+                        found = true;
+                    } else {
+                        newHiddenWord += hiddenWord[i];
+                    }
+                }
+                
+                if (!found) {
+                    wrongGuesses++;
+                }
+                hiddenWord = newHiddenWord;
+            }
+            
+            document.getElementById("word-display").innerText = hiddenWord;
+            document.getElementById("hangman").innerText = hangmanStages[Math.min(wrongGuesses, maxGuesses - 1)];
+            
+            if (hiddenWord === correctWord) {
+                document.getElementById("message").innerText = "Congratulations! You guessed the word!";
+            } else if (wrongGuesses >= maxGuesses) {
+                document.getElementById("message").innerText = "Game Over! The word was: " + correctWord;
+            }
+        }
+    </script>
+</body>
+</html>
