@@ -25,6 +25,13 @@
             font-weight: bold;
             margin-top: 20px;
         }
+        #wrong-guesses {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -45,12 +52,15 @@
     <input type="text" id="guess" placeholder="Enter a letter or word">
     <button onclick="makeGuess()">Guess</button>
     <p id="message"></p>
+    <p id="wrong-guesses"></p>
 
     <script>
         const correctWord = "DIRECTOR LIABILITY";
         let hiddenWord = correctWord.replace(/[A-Z]/g, "_");
         let wrongGuesses = 0;
         const maxGuesses = 8;
+        let incorrectGuesses = [];
+        
         const hangmanStages = [
             "\n        +---+\n        |   |\n        O   |\n            |\n            |\n            |\n        =========",
             "\n        +---+\n        |   |\n        O   |\n        |   |\n            |\n            |\n        =========",
@@ -74,6 +84,7 @@
                     hiddenWord = correctWord;
                 } else {
                     wrongGuesses++;
+                    incorrectGuesses.push(userGuess);
                 }
             } else {
                 let newHiddenWord = "";
@@ -89,12 +100,14 @@
                 
                 if (!found) {
                     wrongGuesses++;
+                    incorrectGuesses.push(userGuess);
                 }
                 hiddenWord = newHiddenWord;
             }
             
             document.getElementById("word-display").innerText = hiddenWord;
             document.getElementById("hangman").innerText = hangmanStages[Math.min(wrongGuesses, maxGuesses - 1)];
+            document.getElementById("wrong-guesses").innerHTML = "Wrong Guesses: " + incorrectGuesses.map(guess => `<s>${guess}</s>`).join(" ");
             
             if (hiddenWord === correctWord) {
                 document.getElementById("message").innerText = "Congratulations! You guessed the word!";
@@ -105,3 +118,4 @@
     </script>
 </body>
 </html>
+
