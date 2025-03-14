@@ -5,117 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangman Game</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        #hangman {
-            font-size: 24px;
-            white-space: pre;
-            font-family: monospace;
-        }
-        #word-display {
-            font-size: 24px;
-            letter-spacing: 5px;
-            margin: 20px 0;
-        }
-        #message {
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        #wrong-guesses {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 18px;
-            color: red;
-        }
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #hangman-container { font-family: monospace; white-space: pre; font-size: 20px; }
+        #wrong-guesses { margin-top: 20px; text-decoration: line-through; color: red; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
     <h1>Hangman Game</h1>
-    <p>Guess the word before the hangman is complete. If you guess a correct letter, it will be filled on the dashed line. If you guess an incorrect letter, a body part will be drawn on the hangman. The game ends when the word is guessed or the hangman is complete.</p>
-    
-    <pre id="hangman">
-        +---+
-        |   |
-            |
-            |
-            |
-            |
-        =========
-    </pre>
-    
+    <p><strong>Clue:</strong> [Placeholder clue]</p>
+    <p>Guess the word before the hangman is complete. If you guess a correct letter, it will be filled on the dashed line. If you guess an incorrect letter, a body part will be drawn on the hangman. <strong>The game ends when the puzzle is solved</strong> or the hangman is complete.</p>
+    <div id="hangman-container"></div>
     <p id="word-display"></p>
-    <input type="text" id="guess" placeholder="Enter a letter or word">
+    <input type="text" id="guess-input" maxlength="1" placeholder="Enter a letter">
     <button onclick="makeGuess()">Guess</button>
-    <p id="message"></p>
     <p id="wrong-guesses"></p>
-
+    <p><a href="https://infozone.omega.dce-eir.net/english/r5041000/tlr/tlr09/drctrslblt-e.html" target="_blank">For more information on this topic, refer to the Directors' liability – Tax programs TSO/NVCC collections page</a></p>
+    
     <script>
-        const correctWord = "DIRECTOR LIABILITY";
-        let hiddenWord = correctWord.replace(/[A-Z]/g, "_");
-        let wrongGuesses = 0;
-        const maxGuesses = 8;
-        let incorrectGuesses = [];
-        
-        const hangmanStages = [
-            "\n        +---+\n        |   |\n        O   |\n            |\n            |\n            |\n        =========",
-            "\n        +---+\n        |   |\n        O   |\n        |   |\n            |\n            |\n        =========",
-            "\n        +---+\n        |   |\n        O   |\n       /|   |\n            |\n            |\n        =========",
-            "\n        +---+\n        |   |\n        O   |\n       /|\  |\n            |\n            |\n        =========",
-            "\n        +---+\n        |   |\n        O   |\n       /|\  |\n       /    |\n            |\n        =========",
-            "\n        +---+\n        |   |\n        O   |\n       /|\  |\n       / \  |\n            |\n        =========",
-            "\n        +---+\n        |   |\n        O   |\n       /|\  |\n       / \  |\n       x x  |\n        =========",
-            "\n        +---+\n        |   |\n        O   |\n       /|\  |\n       / \  |\n       x x  |\n      GAME OVER\n        ========="
-        ];
+        const correctWord = "DUE DILIGENCE".toUpperCase();
+        let guessedWord = correctWord.replace(/[A-Z]/g, '_');
+        let wrongGuesses = [];
+        let incorrectGuesses = 0;
 
-        document.getElementById("word-display").innerText = hiddenWord;
-        
+        function updateDisplay() {
+            document.getElementById('word-display').textContent = guessedWord.split('').join(' ');
+            document.getElementById('hangman-container').textContent = drawHangman(incorrectGuesses);
+            document.getElementById('wrong-guesses').innerHTML = wrongGuesses.map(letter => `<span style="text-decoration: line-through;">${letter}</span>`).join(' ');
+        }
+
         function makeGuess() {
-            const userGuess = document.getElementById("guess").value.toUpperCase().trim();
-            document.getElementById("guess").value = "";
-            if (!userGuess) return;
-            
-            if (userGuess.length > 1) {
-                if (userGuess === correctWord) {
-                    hiddenWord = correctWord;
-                } else {
-                    wrongGuesses++;
-                    incorrectGuesses.push(userGuess);
-                }
+            let guess = document.getElementById('guess-input').value.toUpperCase();
+            document.getElementById('guess-input').value = '';
+            if (!guess || guessedWord.includes(guess) || wrongGuesses.includes(guess)) return;
+
+            if (correctWord.includes(guess)) {
+                guessedWord = correctWord.split('').map((letter, i) => letter === guess ? guess : guessedWord[i]).join('');
             } else {
-                let newHiddenWord = "";
-                let found = false;
-                for (let i = 0; i < correctWord.length; i++) {
-                    if (correctWord[i] === userGuess) {
-                        newHiddenWord += userGuess;
-                        found = true;
-                    } else {
-                        newHiddenWord += hiddenWord[i];
-                    }
-                }
-                
-                if (!found) {
-                    wrongGuesses++;
-                    incorrectGuesses.push(userGuess);
-                }
-                hiddenWord = newHiddenWord;
+                wrongGuesses.push(guess);
+                incorrectGuesses++;
             }
-            
-            document.getElementById("word-display").innerText = hiddenWord;
-            document.getElementById("hangman").innerText = hangmanStages[Math.min(wrongGuesses, maxGuesses - 1)];
-            document.getElementById("wrong-guesses").innerHTML = "Wrong Guesses: " + incorrectGuesses.map(guess => `<s>${guess}</s>`).join(" ");
-            
-            if (hiddenWord === correctWord) {
-                document.getElementById("message").innerText = "Congratulations! You guessed the word!";
-            } else if (wrongGuesses >= maxGuesses) {
-                document.getElementById("message").innerText = "Game Over! The word was: " + correctWord;
+            updateDisplay();
+
+            if (guessedWord === correctWord) {
+                alert("Congratulations! You solved the puzzle.");
+            } else if (incorrectGuesses >= 8) {
+                alert("Game over! The correct word was: " + correctWord);
             }
         }
+
+        function drawHangman(stage) {
+            const hangmanStages = [
+                "\n\n\n\n\n\n========", // 0
+                "\n\n\n\n  O\n\n========", // 1 head
+                "\n\n\n  |\n  O\n\n========", // 2 torso
+                "\n\n /|\n  O\n\n========", // 3 left arm
+                "\n\n /|\\\n  O\n\n========", // 4 right arm
+                "\n / \n /|\\\n  O\n\n========", // 5 left leg
+                "\n / \\\n /|\\\n  O\n\n========", // 6 right leg
+                "\n / \\\n /|\\\n  X\n\n========"  // 7 X eyes
+            ];
+            return hangmanStages[Math.min(stage, hangmanStages.length - 1)];
+        }
+
+        updateDisplay();
     </script>
 </body>
 </html>
-
