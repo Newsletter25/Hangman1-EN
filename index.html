@@ -13,7 +13,7 @@ const Hangman = () => {
   useEffect(() => {
     if (wrongGuesses.length >= maxWrongGuesses) {
       setGameStatus("lost");
-    } else if (word.split(" ").join("").split("").every(letter => guesses.includes(letter))) {
+    } else if (word.split(" ").join("".split("")).every(letter => guesses.includes(letter))) {
       setGameStatus("won");
     }
   }, [guesses, wrongGuesses, word]);
@@ -39,41 +39,11 @@ const Hangman = () => {
     ));
   };
 
-  const drawHangman = () => {
-    const parts = [
-      "head", // First mistake: Head
-      "torso", // Second mistake: Torso
-      "left-arm", // Third mistake: Left Arm
-      "right-arm", // Fourth mistake: Right Arm
-      "left-leg", // Fifth mistake: Left Leg
-      "right-leg", // Sixth mistake: Right Leg
-      "eyes" // Final stage: X Eyes
-    ];
-    return (
-      <div className="hangman-figure">
-        <div className="gallows">
-          <div className="top-bar"></div>
-          <div className="vertical-bar"></div>
-          <div className="base"></div>
-          <div className="rope"></div>
-        </div>
-        {wrongGuesses.length > 0 && <div className="head"></div>}
-        {wrongGuesses.length > 1 && <div className="torso"></div>}
-        {wrongGuesses.length > 2 && <div className="left-arm"></div>}
-        {wrongGuesses.length > 3 && <div className="right-arm"></div>}
-        {wrongGuesses.length > 4 && <div className="left-leg"></div>}
-        {wrongGuesses.length > 5 && <div className="right-leg"></div>}
-        {wrongGuesses.length > 6 && <div className="eyes"></div>}
-      </div>
-    );
-  };
-
   return (
     <div className="hangman-container">
       <h1>Hangman Game</h1>
       <p className="clue">Clue: Legal and financial responsibility</p>
-      <p>Guess the word before the hangman is complete. If you guess a correct letter, it will be filled on the dashed line. If you guess an incorrect letter, a body part will be drawn on the hangman. <strong>The game ends when the puzzle is solved</strong> or the hangman is complete.</p>
-      {drawHangman()}
+      <p>Guess the word before the hangman is complete.</p>
       <p className="word-display">{renderWord()}</p>
       <input
         type="text"
@@ -81,8 +51,7 @@ const Hangman = () => {
         onChange={(e) => handleGuess(e.target.value.toUpperCase())}
         placeholder="Enter a letter"
       />
-      <p className="wrong-guesses">Wrong Guesses: {wrongGuesses.map((letter, i) => <span key={i} className="strikethrough">{letter}</span>)}</p>
-      <p className="info">For more information on this topic, refer to the <a href="https://infozone.omega.dce-eir.net/english/r5041000/tlr/tlr09/drctrslblt-e.html">Directors' liability – Tax programs TSO/NVCC collections page</a></p>
+      <p className="wrong-guesses">Wrong Guesses: {wrongGuesses.join(", ")}</p>
     </div>
   );
 };
