@@ -56,14 +56,14 @@
 
         function drawHangman(stage) {
             const hangmanStages = [
-                "\n\n\n\n\n\n========", // 0
-                "\n\n\n\n  O\n\n========", // 1 head
-                "\n\n\n  |\n  O\n\n========", // 2 torso
-                "\n\n /|\n  O\n\n========", // 3 left arm
-                "\n\n /|\\\n  O\n\n========", // 4 right arm
-                "\n / \n /|\\\n  O\n\n========", // 5 left leg
-                "\n / \\\n /|\\\n  O\n\n========", // 6 right leg
-                "\n / \\\n /|\\\n  X\n\n========"  // 7 X eyes
+                "       _____\n      |     |\n      |\n      |\n      |\n     _|_____\n",  // 0: empty state (gallows)
+                "       _____\n      |     |\n      |     O\n      |\n      |\n     _|_____\n",  // 1: head
+                "       _____\n      |     |\n      |     O\n      |     |\n      |\n     _|_____\n",  // 2: torso
+                "       _____\n      |     |\n      |     O\n      |    /|\n      |\n     _|_____\n",  // 3: left arm
+                "       _____\n      |     |\n      |     O\n      |    /|\\\n      |\n     _|_____\n",  // 4: right arm
+                "       _____\n      |     |\n      |     O\n      |    /|\\\n      |    / \n     _|_____\n",  // 5: left leg
+                "       _____\n      |     |\n      |     O\n      |    /|\\\n      |    / \\\n     _|_____\n",  // 6: right leg
+                "       _____\n      |     |\n      |     X\n      |    /|\\\n      |    / \\\n     _|_____\n"   // 7: X eyes (game over)
             ];
             return hangmanStages[Math.min(stage, hangmanStages.length - 1)];
         }
