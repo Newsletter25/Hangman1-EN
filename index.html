@@ -54,14 +54,14 @@
             }
         }
 
-        function drawHangman(stage) {
-            const hangmanStages = [
+function drawHangman(stage) {
+    const hangmanStages = [
         // Gallows with no hangman
         `       _____
         |     |
-        |     
-        |     
-        |     
+        |     |
+        |     |
+        |     |
        _|_____
         `,  // 0: empty state (gallows)
         
@@ -69,8 +69,8 @@
         `       _____
         |     |
         |     O
-        |     
-        |     
+        |     |
+        |     |
        _|_____
         `,  // 1: head
         
@@ -79,7 +79,7 @@
         |     |
         |     O
         |     |
-        |     
+        |     |
        _|_____
         `,  // 2: torso
         
@@ -88,7 +88,7 @@
         |     |
         |     O
         |    /|
-        |     
+        |     |
        _|_____
         `,  // 3: left arm
         
@@ -97,7 +97,7 @@
         |     |
         |     O
         |    /|\\
-        |     
+        |     |
        _|_____
         `,  // 4: right arm
         
@@ -127,9 +127,10 @@
         |    / \\
        _|_____
         `   // 7: X eyes (game over)
-            ];
-            return hangmanStages[Math.min(stage, hangmanStages.length - 1)];
-        }
+    ];
+
+    return hangmanStages[Math.min(stage, hangmanStages.length - 1)];
+}
 
         updateDisplay();
     </script>
