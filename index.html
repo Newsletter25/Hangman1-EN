@@ -6,7 +6,11 @@
     <title>Hangman Game</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
-        #hangman-container { font-family: monospace; white-space: pre; font-size: 20px; }
+        #hangman-container {
+            font-family: monospace;
+            white-space: pre-wrap; /* Makes sure \n and spaces are respected */
+            font-size: 20px;
+        }
         #wrong-guesses { margin-top: 20px; text-decoration: line-through; color: red; }
         .hidden { display: none; }
     </style>
@@ -20,7 +24,6 @@
     <input type="text" id="guess-input" maxlength="1" placeholder="Enter a letter">
     <button onclick="makeGuess()">Guess</button>
     <p id="wrong-guesses"></p>
-    <p><a href="https://infozone.omega.dce-eir.net/english/r5041000/tlr/tlr09/drctrslblt-e.html" target="_blank">For more information on this topic, refer to the Directors' liability – Tax programs TSO/NVCC collections page</a></p>
     
     <script>
         const correctWord = "DUE DILIGENCE".toUpperCase();
@@ -54,8 +57,8 @@
             }
         }
 
-function drawHangman(stage) {
-    const hangmanStages = [
+        function drawHangman(stage) {
+            const hangmanStages = [
                 "       _____\n      |     |\n      |\n      |\n      |\n     _|_____\n",  // 0: empty state (gallows)
                 "       _____\n      |     |\n      |     O\n      |\n      |\n     _|_____\n",  // 1: head
                 "       _____\n      |     |\n      |     O\n      |     |\n      |\n     _|_____\n",  // 2: torso
@@ -65,9 +68,8 @@ function drawHangman(stage) {
                 "       _____\n      |     |\n      |     O\n      |    /|\\\n      |    / \\\n     _|_____\n",  // 6: right leg
                 "       _____\n      |     |\n      |     X\n      |    /|\\\n      |    / \\\n     _|_____\n"   // 7: X eyes (game over)
             ];
-
-    return hangmanStages[Math.min(stage, hangmanStages.length - 1)];
-}
+            return hangmanStages[Math.min(stage, hangmanStages.length - 1)];
+        }
 
         updateDisplay();
     </script>
