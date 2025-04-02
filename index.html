@@ -56,14 +56,77 @@
 
         function drawHangman(stage) {
             const hangmanStages = [
-                "       _____\n      |     |\n      |\n      |\n      |\n     _|_____\n",  // 0: empty state (gallows)
-                "       _____\n      |     |\n      |     O\n      |\n      |\n     _|_____\n",  // 1: head
-                "       _____\n      |     |\n      |     O\n      |     |\n      |\n     _|_____\n",  // 2: torso
-                "       _____\n      |     |\n      |     O\n      |    /|\n      |\n     _|_____\n",  // 3: left arm
-                "       _____\n      |     |\n      |     O\n      |    /|\\\n      |\n     _|_____\n",  // 4: right arm
-                "       _____\n      |     |\n      |     O\n      |    /|\\\n      |    / \n     _|_____\n",  // 5: left leg
-                "       _____\n      |     |\n      |     O\n      |    /|\\\n      |    / \\\n     _|_____\n",  // 6: right leg
-                "       _____\n      |     |\n      |     X\n      |    /|\\\n      |    / \\\n     _|_____\n"   // 7: X eyes (game over)
+        // Gallows with no hangman
+        `       _____
+        |     |
+        |     
+        |     
+        |     
+       _|_____
+        `,  // 0: empty state (gallows)
+        
+        // Gallows with head
+        `       _____
+        |     |
+        |     O
+        |     
+        |     
+       _|_____
+        `,  // 1: head
+        
+        // Gallows with torso
+        `       _____
+        |     |
+        |     O
+        |     |
+        |     
+       _|_____
+        `,  // 2: torso
+        
+        // Gallows with left arm
+        `       _____
+        |     |
+        |     O
+        |    /|
+        |     
+       _|_____
+        `,  // 3: left arm
+        
+        // Gallows with right arm
+        `       _____
+        |     |
+        |     O
+        |    /|\\
+        |     
+       _|_____
+        `,  // 4: right arm
+        
+        // Gallows with left leg
+        `       _____
+        |     |
+        |     O
+        |    /|\\
+        |    / 
+       _|_____
+        `,  // 5: left leg
+        
+        // Gallows with right leg
+        `       _____
+        |     |
+        |     O
+        |    /|\\
+        |    / \\
+       _|_____
+        `,  // 6: right leg
+        
+        // Gallows with X eyes (game over)
+        `       _____
+        |     |
+        |     X
+        |    /|\\
+        |    / \\
+       _|_____
+        `   // 7: X eyes (game over)
             ];
             return hangmanStages[Math.min(stage, hangmanStages.length - 1)];
         }
