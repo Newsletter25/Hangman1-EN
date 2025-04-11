@@ -24,7 +24,10 @@
     <input type="text" id="guess-input" maxlength="1" placeholder="Enter a letter">
     <button onclick="makeGuess()">Guess</button>
     <p id="wrong-guesses"></p>
-    
+
+    <!-- Added the information page reference -->
+    <p>For more information on this topic, refer to the ____________ page.</p>
+
     <script>
         const correctWord = "DUE DILIGENCE".toUpperCase();
         let guessedWord = correctWord.replace(/[A-Z]/g, '_');
