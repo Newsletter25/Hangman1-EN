@@ -30,11 +30,14 @@
 
     <script>
         const correctWord = "DUE DILIGENCE".toUpperCase();
-        let guessedWord = correctWord.replace(/[A-Z]/g, (match) => match === ' ' ? ' ' : '_'); // Ensure spaces are handled
+        
+        // Adjusted the guessedWord initialization to preserve spaces between words
+        let guessedWord = correctWord.split('').map(letter => letter === ' ' ? ' ' : '_').join('');
         let wrongGuesses = [];
         let incorrectGuesses = 0;
 
         function updateDisplay() {
+            // Display the word with spaces properly formatted
             document.getElementById('word-display').textContent = guessedWord.split('').join(' ');
             document.getElementById('hangman-container').textContent = drawHangman(incorrectGuesses);
             document.getElementById('wrong-guesses').innerHTML = wrongGuesses.map(letter => `<span style="text-decoration: line-through;">${letter}</span>`).join(' ');
@@ -71,7 +74,15 @@
                 "       _____\n      |     |\n      |     O\n      |    /|\\\n      |    / \\\n     _|_____\n",  // 6: right leg
                 "       _____\n      |     |\n      |     X\n      |    /|\\\n      |    / \\\n     _|_____\n"   // 7: X eyes (game over)
             ];
-            return hangmanStages[Math.min(stage, hangmanStages.length - 1)];
+
+            // Aligning all hangman stages vertically with consistent spacing
+            const alignedStages = hangmanStages.map(stage => {
+                return stage.split('\n').map(line => {
+                    return line.padEnd(19); // Adjust the length of each line to ensure vertical alignment
+                }).join('\n');
+            });
+
+            return alignedStages[Math.min(stage, hangmanStages.length - 1)];
         }
 
         updateDisplay();
