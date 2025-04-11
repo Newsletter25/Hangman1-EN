@@ -18,7 +18,7 @@
 <body>
     <h1>Hangman Game</h1>
     <p><strong>Clue:</strong> [Placeholder clue]</p>
-    <p>Guess the word before the hangman is complete. If you guess a correct letter, it will be filled on the dashed line. If you guess an incorrect letter, a body part will be drawn on the hangman. <strong>The game ends when the puzzle is solved</strong> or the hangman is complete.</p>
+    <p>Guess the word before the hangman is complete. If you guess a correct letter, it will be filled on the dashed line. If you guess an incorrect letter, a body part will be drawn on the hangman. The game ends when the puzzle is solved or the hangman is complete.</p>
     <div id="hangman-container"></div>
     <p id="word-display"></p>
     <input type="text" id="guess-input" maxlength="1" placeholder="Enter a letter">
@@ -30,7 +30,7 @@
 
     <script>
         const correctWord = "DUE DILIGENCE".toUpperCase();
-        let guessedWord = correctWord.replace(/[A-Z]/g, '_');
+        let guessedWord = correctWord.replace(/[A-Z]/g, (match) => match === ' ' ? ' ' : '_'); // Ensure spaces are handled
         let wrongGuesses = [];
         let incorrectGuesses = 0;
 
