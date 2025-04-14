@@ -31,13 +31,14 @@
     <script>
         const correctWord = "DUE DILIGENCE".toUpperCase();
         
-        // Adjusted the guessedWord initialization to preserve spaces between words
+        // Initialize guessedWord with underscores and spaces between words
         let guessedWord = correctWord.split('').map(letter => letter === ' ' ? ' ' : '_').join('');
         let wrongGuesses = [];
         let incorrectGuesses = 0;
 
         function updateDisplay() {
             // Display the word with spaces properly formatted
+            // Ensure the space between words is correctly represented
             document.getElementById('word-display').textContent = guessedWord.split('').join(' ');
             document.getElementById('hangman-container').textContent = drawHangman(incorrectGuesses);
             document.getElementById('wrong-guesses').innerHTML = wrongGuesses.map(letter => `<span style="text-decoration: line-through;">${letter}</span>`).join(' ');
