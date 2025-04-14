@@ -39,9 +39,15 @@
         function updateDisplay() {
             // Display the word with spaces properly formatted
             // Ensure the space between words is correctly represented
-            document.getElementById('word-display').textContent = guessedWord.split('').join(' ');
+            document.getElementById('word-display').textContent = formatWordDisplay(guessedWord);
             document.getElementById('hangman-container').textContent = drawHangman(incorrectGuesses);
             document.getElementById('wrong-guesses').innerHTML = wrongGuesses.map(letter => `<span style="text-decoration: line-through;">${letter}</span>`).join(' ');
+        }
+
+        function formatWordDisplay(word) {
+            // This function ensures that there is space between words
+            let formattedWord = word.split('').map(letter => letter === ' ' ? '    ' : letter).join(' ');
+            return formattedWord;
         }
 
         function makeGuess() {
