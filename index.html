@@ -30,28 +30,19 @@
 
     <script>
         const correctWord = "DUE DILIGENCE".toUpperCase();
+        
+        // Initialize guessedWord with underscores for each letter, and space between words
+        let guessedWord = correctWord.split('').map(letter => letter === ' ' ? ' ' : '_').join('');
+        let wrongGuesses = [];
+        let incorrectGuesses = 0;
 
-// Initialize guessedWord with underscores for each letter, and space between words
-let guessedWord = correctWord.split('').map(letter => letter === ' ' ? ' ' : '_').join('');
-let wrongGuesses = [];
-let incorrectGuesses = 0;
-
-function updateDisplay() {
-    // Display the word with spaces properly formatted
-    document.getElementById('word-display').textContent = formatWordDisplay(guessedWord);  // <-- Here we call formatWordDisplay()
-    document.getElementById('hangman-container').textContent = drawHangman(incorrectGuesses);
-    document.getElementById('wrong-guesses').innerHTML = wrongGuesses.map(letter => `<span style="text-decoration: line-through;">${letter}</span>`).join(' ');
-}
-
-// Format the word for display, adding spaces between letters and four spaces between words
-function formatWordDisplay(word) {
-    return word.split('').map((letter, index) => {
-        if (letter === ' ') {
-            return '    ';  // Add exactly four spaces for the space between words
+        function updateDisplay() {
+            // Display the word with spaces properly formatted
+            document.getElementById('word-display').textContent = formatWordDisplay(guessedWord);
+            document.getElementById('hangman-container').textContent = drawHangman(incorrectGuesses);
+            document.getElementById('wrong-guesses').innerHTML = wrongGuesses.map(letter => `<span style="text-decoration: line-through;">${letter}</span>`).join(' ');
         }
-        return letter === '_' ? '_ ' : letter + ' '; // Add one space between each letter
-    }).join('');
-}
+
         function makeGuess() {
             let guess = document.getElementById('guess-input').value.toUpperCase();
             document.getElementById('guess-input').value = '';
@@ -92,6 +83,21 @@ function formatWordDisplay(word) {
             });
 
             return alignedStages[Math.min(stage, hangmanStages.length - 1)];
+        }
+
+        // Format the word for display, adding 8 spaces between words
+        function formatWordDisplay(word) {
+            let formatted = '';
+            for (let i = 0; i < word.length; i++) {
+                if (word[i] === ' ') {
+                    formatted += '        ';  // Add 8 spaces for the gap between words
+                } else if (word[i] === '_') {
+                    formatted += '_ ';  // Add 1 space between underscores
+                } else {
+                    formatted += word[i] + ' ';  // Add 1 space between letters
+                }
+            }
+            return formatted.trim(); // Remove trailing space at the end
         }
 
         updateDisplay();
