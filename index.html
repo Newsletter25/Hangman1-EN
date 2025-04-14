@@ -5,55 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangman Game</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
         #hangman-container {
             font-family: monospace;
             white-space: pre-wrap; /* Makes sure \n and spaces are respected */
             font-size: 20px;
         }
-        #wrong-guesses { margin-top: 20px; text-decoration: line-through; color: red; }
-        .hidden { display: none; }
+        #word-display {
+            font-size: 28px;
+            margin-top: 20px;
+        }
+        #wrong-guesses {
+            margin-top: 20px;
+            text-decoration: line-through;
+            color: red;
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <h1>Hangman Game</h1>
     <p><strong>Clue:</strong> [Placeholder clue]</p>
-    <p>Guess the word before the hangman is complete. If you guess a correct letter, it will be filled on the dashed line. If you guess an incorrect letter, a body part will be drawn on the hangman. The game ends when the puzzle is solved or the hangman is complete.</p>
+    <p>
+        Guess the word before the hangman is complete. If you guess a correct letter, it will be filled on the dashed line. 
+        If you guess an incorrect letter, a body part will be drawn on the hangman. The game ends when the puzzle is solved 
+        or the hangman is complete.
+    </p>
+
     <div id="hangman-container"></div>
     <p id="word-display"></p>
+
     <input type="text" id="guess-input" maxlength="1" placeholder="Enter a letter">
     <button onclick="makeGuess()">Guess</button>
     <p id="wrong-guesses"></p>
 
-    <!-- Added the information page reference -->
-    <p>For more information on this topic, refer to the <a href="https://infozone.omega.dce-eir.net/english/r5041000/tlr/tlr09/drctrslblt-e.html" target="_blank">Directors' liability – Tax programs TSO/NVCC collections page</a>.</p>
+    <p>
+        For more information on this topic, refer to the 
+        <a href="https://infozone.omega.dce-eir.net/english/r5041000/tlr/tlr09/drctrslblt-e.html" target="_blank">
+            Directors' liability – Tax programs TSO/NVCC collections page
+        </a>.
+    </p>
 
     <script>
         const correctWord = "DUE DILIGENCE".toUpperCase();
-        
-        // Initialize guessedWord with underscores for each letter, and space between words
+
         let guessedWord = correctWord.split('').map(letter => letter === ' ' ? ' ' : '_').join('');
         let wrongGuesses = [];
         let incorrectGuesses = 0;
 
         function updateDisplay() {
-    document.getElementById('word-display').innerHTML = formatWordDisplay(guessedWord);
-    document.getElementById('hangman-container').textContent = drawHangman(incorrectGuesses);
-    document.getElementById('wrong-guesses').innerHTML = wrongGuesses.map(letter => `<span style="text-decoration: line-through;">${letter}</span>`).join(' ');
-}
-
-// Helper function to format display with a "tab"-like gap
-function formatWordDisplay(word) {
-    let formatted = '';
-    for (let char of word) {
-        if (char === ' ') {
-            formatted += '&nbsp;&nbsp;&nbsp;&nbsp;'; // 4 non-breaking spaces = tab-like gap
-        } else {
-            formatted += char + '&nbsp;';
+            document.getElementById('word-display').innerHTML = formatWordDisplay(guessedWord);
+            document.getElementById('hangman-container').textContent = drawHangman(incorrectGuesses);
+            document.getElementById('wrong-guesses').innerHTML = wrongGuesses.map(letter =>
+                `<span style="text-decoration: line-through;">${letter}</span>`).join(' ');
         }
-    }
-    return formatted.trim();
-}
+
+        function formatWordDisplay(word) {
+            let formatted = '';
+            for (let i = 0; i < word.length; i++) {
+                if (word[i] === ' ') {
+                    formatted += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; // 8 non-breaking spaces
+                } else if (word[i] === '_') {
+                    formatted += '_&nbsp;';
+                } else {
+                    formatted += word[i] + '&nbsp;';
+                }
+            }
+            return formatted.trim();
+        }
 
         function makeGuess() {
             let guess = document.getElementById('guess-input').value.toUpperCase();
@@ -61,11 +85,13 @@ function formatWordDisplay(word) {
             if (!guess || guessedWord.includes(guess) || wrongGuesses.includes(guess)) return;
 
             if (correctWord.includes(guess)) {
-                guessedWord = correctWord.split('').map((letter, i) => letter === guess ? guess : guessedWord[i]).join('');
+                guessedWord = correctWord.split('').map((letter, i) =>
+                    letter === guess ? guess : guessedWord[i]).join('');
             } else {
                 wrongGuesses.push(guess);
                 incorrectGuesses++;
             }
+
             updateDisplay();
 
             if (guessedWord === correctWord) {
@@ -77,39 +103,17 @@ function formatWordDisplay(word) {
 
         function drawHangman(stage) {
             const hangmanStages = [
-                "       _____\n      |     |\n      |\n      |\n      |\n     _|_____\n",  // 0: empty state (gallows)
-                "       _____\n      |     |\n      |     O\n      |\n      |\n     _|_____\n",  // 1: head
-                "       _____\n      |     |\n      |     O\n      |     |\n      |\n     _|_____\n",  // 2: torso
-                "       _____\n      |     |\n      |     O\n      |    /|\n      |\n     _|_____\n",  // 3: left arm
-                "       _____\n      |     |\n      |     O\n      |    /|\\\n      |\n     _|_____\n",  // 4: right arm
-                "       _____\n      |     |\n      |     O\n      |    /|\\\n      |    / \n     _|_____\n",  // 5: left leg
-                "       _____\n      |     |\n      |     O\n      |    /|\\\n      |    / \\\n     _|_____\n",  // 6: right leg
-                "       _____\n      |     |\n      |     X\n      |    /|\\\n      |    / \\\n     _|_____\n"   // 7: X eyes (game over)
+                "       _____\n      |     |\n      |\n      |\n      |\n     _|_____\n",
+                "       _____\n      |     |\n      |     O\n      |\n      |\n     _|_____\n",
+                "       _____\n      |     |\n      |     O\n      |     |\n      |\n     _|_____\n",
+                "       _____\n      |     |\n      |     O\n      |    /|\n      |\n     _|_____\n",
+                "       _____\n      |     |\n      |     O\n      |    /|\\\n      |\n     _|_____\n",
+                "       _____\n      |     |\n      |     O\n      |    /|\\\n      |    / \n     _|_____\n",
+                "       _____\n      |     |\n      |     O\n      |    /|\\\n      |    / \\\n     _|_____\n",
+                "       _____\n      |     |\n      |     X\n      |    /|\\\n      |    / \\\n     _|_____\n"
             ];
 
-            // Aligning all hangman stages vertically with consistent spacing
-            const alignedStages = hangmanStages.map(stage => {
-                return stage.split('\n').map(line => {
-                    return line.padEnd(19); // Adjust the length of each line to ensure vertical alignment
-                }).join('\n');
-            });
-
-            return alignedStages[Math.min(stage, hangmanStages.length - 1)];
-        }
-
-        // Format the word for display, adding 8 spaces between words
-        function formatWordDisplay(word) {
-            let formatted = '';
-            for (let i = 0; i < word.length; i++) {
-                if (word[i] === ' ') {
-                    formatted += '        ';  // Add 8 spaces for the gap between words
-                } else if (word[i] === '_') {
-                    formatted += '_ ';  // Add 1 space between underscores
-                } else {
-                    formatted += word[i] + ' ';  // Add 1 space between letters
-                }
-            }
-            return formatted.trim(); // Remove trailing space at the end
+            return hangmanStages[Math.min(stage, hangmanStages.length - 1)];
         }
 
         updateDisplay();
