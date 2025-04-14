@@ -37,19 +37,19 @@
         let incorrectGuesses = 0;
 
         function updateDisplay() {
-    document.getElementById('word-display').textContent = formatWordDisplay(guessedWord);
+    document.getElementById('word-display').innerHTML = formatWordDisplay(guessedWord);
     document.getElementById('hangman-container').textContent = drawHangman(incorrectGuesses);
     document.getElementById('wrong-guesses').innerHTML = wrongGuesses.map(letter => `<span style="text-decoration: line-through;">${letter}</span>`).join(' ');
 }
 
-// ✨ New helper function to control spacing of the word display
+// Helper function to format display with a "tab"-like gap
 function formatWordDisplay(word) {
     let formatted = '';
     for (let char of word) {
         if (char === ' ') {
-            formatted += '    '; // 4 spaces for a visible gap
+            formatted += '&nbsp;&nbsp;&nbsp;&nbsp;'; // 4 non-breaking spaces = tab-like gap
         } else {
-            formatted += char + ' '; // Regular spacing
+            formatted += char + '&nbsp;';
         }
     }
     return formatted.trim();
