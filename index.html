@@ -25,22 +25,31 @@
     <button onclick="makeGuess()">Guess</button>
     <p id="wrong-guesses"></p>
 
-    <!-- Added the information page reference -->
-    <p>For more information on this topic, refer to the <a href="https://infozone.omega.dce-eir.net/english/r5041000/tlr/tlr09/drctrslblt-e.html" target="_blank">Directors' liability – Tax programs TSO/NVCC collections page</a>.</p>
-
     <script>
         const correctWord = "DUE DILIGENCE".toUpperCase();
         
-        // Adjusted the guessedWord initialization to preserve spaces between words
+        // Adjust the guessedWord initialization to preserve spaces between words
         let guessedWord = correctWord.split('').map(letter => letter === ' ' ? ' ' : '_').join('');
         let wrongGuesses = [];
         let incorrectGuesses = 0;
 
         function updateDisplay() {
             // Display the word with spaces properly formatted
-            document.getElementById('word-display').textContent = guessedWord.split('').join(' ');
+            document.getElementById('word-display').textContent = formatWordDisplay(guessedWord);
             document.getElementById('hangman-container').textContent = drawHangman(incorrectGuesses);
             document.getElementById('wrong-guesses').innerHTML = wrongGuesses.map(letter => `<span style="text-decoration: line-through;">${letter}</span>`).join(' ');
+        }
+
+        // Format word to display with gaps between the words
+        function formatWordDisplay(word) {
+            // Split the word into characters and insert a single space between each character
+            // For example, "DUE DILIGENCE" becomes "_ _ _    _ _ _ _ _ _ _ _ _"
+            return word.split('').map((letter, index) => {
+                if (letter === ' ') {
+                    return '    ';  // Four spaces for the space between words
+                }
+                return letter === '_' ? '_ ' : letter + ' '; // Single space between each letter
+            }).join('');
         }
 
         function makeGuess() {
@@ -85,6 +94,7 @@
             return alignedStages[Math.min(stage, hangmanStages.length - 1)];
         }
 
+        // Initialize display with the correctly formatted word
         updateDisplay();
     </script>
 </body>
