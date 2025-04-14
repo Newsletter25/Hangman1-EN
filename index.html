@@ -37,11 +37,23 @@
         let incorrectGuesses = 0;
 
         function updateDisplay() {
-            // Display the word with spaces properly formatted
-            document.getElementById('word-display').textContent = formatWordDisplay(guessedWord);
-            document.getElementById('hangman-container').textContent = drawHangman(incorrectGuesses);
-            document.getElementById('wrong-guesses').innerHTML = wrongGuesses.map(letter => `<span style="text-decoration: line-through;">${letter}</span>`).join(' ');
+    document.getElementById('word-display').textContent = formatWordDisplay(guessedWord);
+    document.getElementById('hangman-container').textContent = drawHangman(incorrectGuesses);
+    document.getElementById('wrong-guesses').innerHTML = wrongGuesses.map(letter => `<span style="text-decoration: line-through;">${letter}</span>`).join(' ');
+}
+
+// ✨ New helper function to control spacing of the word display
+function formatWordDisplay(word) {
+    let formatted = '';
+    for (let char of word) {
+        if (char === ' ') {
+            formatted += '    '; // 4 spaces for a visible gap
+        } else {
+            formatted += char + ' '; // Regular spacing
         }
+    }
+    return formatted.trim();
+}
 
         function makeGuess() {
             let guess = document.getElementById('guess-input').value.toUpperCase();
